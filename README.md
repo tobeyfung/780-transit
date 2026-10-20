@@ -22,10 +22,10 @@ City tiers used in the analysis:
 
 ## Data Sources Used in the Notebook
 
-1. U.S. Census city/town population estimates (`population_2020.xlsx`)
-2. FTA total funding time series (`2024 TS1.1 Total Funding Time Series.xlsx`)
-3. FTA monthly ridership data (`ridership.xlsx`)
-4. Social Data Commons walkability index (`2017_2023_walkability_index.csv`)
+1. U.S. Census city/town population estimates (`data/population_2020.xlsx`)
+2. FTA total funding time series (`data/2024 TS1.1 Total Funding Time Series.xlsx`)
+3. FTA monthly ridership data (`data/ridership.xlsx`)
+4. Social Data Commons walkability index (`data/2017_2023_walkability_index.csv`)
 5. EPA National Walkability Index shapefile (`Natl_WI.shp`)
 6. 2010 Census DP1 Places shapefile (`Place_2010Census_DP1.zip`)
 
