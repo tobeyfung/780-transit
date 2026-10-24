@@ -65,3 +65,9 @@ Core libraries used:
 
 - `A03-Transportation-Convenience-Across-US cities.ipynb` — full analysis notebook
 - `README.md` — project summary (this file)
+
+## Contributors
+
+- Ryan Jiang
+- Chenxi Wu
+- Jingyu Zhang
