@@ -21,21 +21,21 @@ body{background:var(--bg);color:var(--fg);font:400 16px/1.6 var(--f-body);margin
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
 a{color:var(--accent)}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.wrap{max-width:820px;margin-inline:auto}
+.wrap{max-width:960px;margin-inline:auto}
 nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:var(--bg);border-bottom:1px solid var(--line);
   display:flex;gap:4px 18px;flex-wrap:wrap;align-items:center;padding-block:10px;font-size:14px}
 nav a{color:var(--muted);text-decoration:none}
 nav a:hover{color:var(--accent);text-decoration:underline}
 nav .brand{color:var(--fg);margin-right:auto;font-weight:600}
-header{padding-block:40px 24px}
+header{padding-block:64px 40px}
 .eyebrow{font-size:14px;color:var(--muted);margin:0 0 8px}
-h1{font-size:clamp(28px,5vw,38px);line-height:1.2;font-weight:700;margin:0 0 12px;text-wrap:balance}
-.lede{font-size:18px;color:var(--muted);max-width:60ch;margin:0 0 16px}
+h1{font-size:clamp(32px,6vw,52px);line-height:1.1;letter-spacing:-.015em;font-weight:700;margin:0 0 12px;text-wrap:balance}
+.lede{font-size:20px;color:var(--muted);max-width:60ch;margin:0 0 16px}
 .stack{font-size:14px;color:var(--muted);margin:0 0 8px}
 .skip{font-size:15px;margin:0}
-section{padding-block:28px;border-top:1px solid var(--line)}
-h2{font-size:clamp(22px,3.5vw,26px);line-height:1.25;font-weight:600;margin:0 0 14px;text-wrap:balance}
-h3{font-size:18px;line-height:1.35;font-weight:600;margin:0 0 6px;text-wrap:balance}
+section{padding-block:48px;border-top:1px solid var(--line)}
+h2{font-size:clamp(24px,4vw,32px);line-height:1.2;font-weight:700;margin:0 0 20px;text-wrap:balance}
+h3{font-size:22px;line-height:1.3;font-weight:650;margin:0 0 10px;text-wrap:balance}
 p{margin:0 0 14px;max-width:68ch}
 ul,ol{padding-left:22px;margin:0 0 14px;max-width:68ch}
 li{margin-bottom:6px}
@@ -47,12 +47,12 @@ li{margin-bottom:6px}
 .pipe-col li:last-child{margin:0}
 .pipe-col small{display:block;color:var(--muted);font-size:13px}
 .arrow{align-self:center;color:var(--muted);font-size:20px}
-.lead{font-size:19px;line-height:1.5;font-weight:600;margin:0 0 18px;max-width:34em}
-figure{margin:16px 0 6px;background:#fff;border:1px solid var(--line);padding:8px}
+.lead{font-size:24px;line-height:1.4;font-weight:650;margin:0 0 24px;max-width:30em}
+figure{margin:20px 0 8px;background:#fff;border:1px solid var(--line);border-radius:4px;padding:14px}
 .scroll{overflow-x:auto}
 figure img{display:block;width:100%;min-width:620px;height:auto}
-figcaption{font-size:13px;color:#59636e;padding:6px 2px 0}
-.insight{margin-bottom:32px}
+figcaption{font-size:14px;color:#59636e;padding:10px 2px 0;border-top:1px solid #e6eaee;margin-top:10px}
+.insight{margin-bottom:64px}.insight:last-child{margin-bottom:0}.sum{font-size:18px;line-height:1.55;color:var(--fg)}.insight .detail{color:var(--muted)}
 .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px}
 .cols>div{min-width:0}
 footer{padding-block:24px 48px;border-top:1px solid var(--line);color:var(--muted);font-size:14px}
@@ -145,32 +145,37 @@ footer p{max-width:none}
 
   <div class="insight">
     <h3>Big cities win on average, but the tiers overlap</h3>
-    <p>Big cities rose from about 31 to about 34 between 2020 and 2023. Medium (about 23) and small (about 22) stayed mostly flat. The spread inside each tier is larger than the gap between tiers, so size alone does not decide a city's score.</p>
+    <p class="sum">Big cities rose from about 31 to about 34 between 2020 and 2023.</p>
     <figure><div class="scroll"><img src="images/graph09.png" alt="Line and scatter chart of average convenience score by year for small, medium and big cities, 2020 to 2023" loading="lazy"></div><figcaption>Average score by year and tier.</figcaption></figure>
+    <p class="detail">Medium (about 23) and small (about 22) stayed mostly flat. The spread inside each tier is larger than the gap between tiers, so size alone does not decide a city's score.</p>
   </div>
 
   <div class="insight">
     <h3>Population growth does not explain convenience</h3>
-    <p>Across all 230 cities, the correlation between 2020–2023 population growth and the change in score is about 0.03. Growth is also close to unrelated to each component: walkability 0.09, funding 0.02, ridership −0.08.</p>
+    <p class="sum">Across all 230 cities, the correlation between 2020–2023 population growth and the change in score is about 0.03.</p>
     <figure><div class="scroll"><img src="images/graph10.png" alt="Four-quadrant scatter plot of population growth against percent change in convenience score for 230 cities, showing no linear relationship" loading="lazy"></div><figcaption>Population growth vs change in score, r ≈ 0.03.</figcaption></figure>
+    <p class="detail">Growth is also close to unrelated to each component: walkability 0.09, funding 0.02, ridership −0.08.</p>
   </div>
 
   <div class="insight">
     <h3>Walkability does the most work, and some cities lean on it too much</h3>
-    <p>Walkability has the strongest link to the score (0.85), then ridership (0.77) and funding (0.70). Part of that is built into the formula. Boston and Washington are balanced, Seattle and San Francisco lean on walkability, and Olympia leans on funding. Bottom-ranked Sherman (about 95%) and Evansville (about 88%) get almost all of their score from walkability and have very little transit.</p>
+    <p class="sum">Walkability has the strongest link to the score (0.85), then ridership (0.77) and funding (0.70).</p>
     <figure><div class="scroll"><img src="images/graph07.png" alt="Stacked bars showing how funding, ridership and walkability contribute to the score for the top five and bottom five cities" loading="lazy"></div><figcaption>Sub-metric contribution, top 5 and bottom 5 cities.</figcaption></figure>
+    <p class="detail">Part of that is built into the formula. Boston and Washington are balanced, Seattle and San Francisco lean on walkability, and Olympia leans on funding. Bottom-ranked Sherman (about 95%) and Evansville (about 88%) get almost all of their score from walkability and have very little transit.</p>
   </div>
 
   <div class="insight">
     <h3>Region matters as much as size</h3>
-    <p>The Northeast has the highest average in every tier, and big Northeastern cities average 55.7. Big cities score highest within every region. Small and medium Southern cities score lowest, at 15.3 and 18.9. Across all regions, small cities score low on funding and ridership while their walkability holds up, and that is the largest sub-metric gap in the data.</p>
+    <p class="sum">The Northeast has the highest average in every tier, and big Northeastern cities average 55.7.</p>
     <figure><div class="scroll"><img src="images/graph12.png" alt="Grouped bar chart of average convenience score by region and city size tier" loading="lazy"></div><figcaption>Average score by region and tier.</figcaption></figure>
+    <p class="detail">Big cities score highest within every region. Small and medium Southern cities score lowest, at 15.3 and 18.9. Across all regions, small cities score low on funding and ridership while their walkability holds up, and that is the largest sub-metric gap in the data.</p>
   </div>
 
   <div class="insight">
     <h3>Every tier recovered ridership</h3>
-    <p>From 2020 to 2023, ridership rose about 58% in big cities, 53% in small, and 40% in medium. Trips per funding dollar are similar across tiers (small 0.083, medium 0.079, big 0.077), so that gap is small.</p>
+    <p class="sum">From 2020 to 2023, ridership rose about 58% in big cities, 53% in small, and 40% in medium.</p>
     <figure><div class="scroll"><img src="images/graph03.png" alt="Bar chart of post-pandemic transit ridership change from 2020 to 2023 by city size tier" loading="lazy"></div><figcaption>Ridership change, 2020 to 2023.</figcaption></figure>
+    <p class="detail">Trips per funding dollar are similar across tiers (small 0.083, medium 0.079, big 0.077), so that gap is small.</p>
   </div>
 </section>
 
