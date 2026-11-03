@@ -47,10 +47,14 @@ li{margin-bottom:6px}
 .pipe-col li:last-child{margin:0}
 .pipe-col small{display:block;color:var(--muted);font-size:13px}
 .arrow{align-self:center;color:var(--muted);font-size:20px}
-.lead{font-size:24px;line-height:1.4;font-weight:650;margin:0 0 24px;max-width:30em}
+.lead{font-size:18px;line-height:1.6;margin:0 0 24px;max-width:68ch}
 figure{margin:20px 0 8px;background:#fff;border:1px solid var(--line);border-radius:4px;padding:14px}
 .scroll{overflow-x:auto}
 figure img{display:block;width:100%;min-width:620px;height:auto}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{text-align:left;padding:8px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-weight:600;color:var(--muted);font-size:14px}
+.tbl{overflow-x:auto;margin:0 0 16px}
 figcaption{font-size:14px;color:#59636e;padding:10px 2px 0;border-top:1px solid #e6eaee;margin-top:10px}
 .insight{margin-bottom:64px}.insight:last-child{margin-bottom:0}.sum{font-size:18px;line-height:1.55;color:var(--fg)}.insight .detail{color:var(--muted)}
 .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px}
@@ -65,155 +69,145 @@ footer p{max-width:none}
 </style>
 </head>
 <body>
-
 <div class="wrap">
 <nav aria-label="Sections">
   <span class="brand">780-transit</span>
-  <a href="#summary">Summary</a>
+  <a href="#background">Background</a>
   <a href="#data">Data</a>
+  <a href="#summary">Summary</a>
   <a href="#insights">Insights</a>
   <a href="#recommendations">Recommendations</a>
+  <a href="#caveats">Caveats</a>
 </nav>
 
 <header>
-  <p class="eyebrow">BU MSBA · Team 3 · Data 2020–2023</p>
-  <h1>Where can you live without a car?</h1>
-  <p class="lede">A Transportation Convenience Score (0–100) for 230 U.S. cities, built from public transit funding, ridership, and walkability data.</p>
+  <h1>Transportation Convenience Across 230 U.S. Cities (2020–2023)</h1>
+  <p class="lede">A Transportation Convenience Score (0–100) that compares U.S. cities on public transit funding, transit ridership, and walkability, built for people who live without a car.</p>
   <p class="stack">Python · pandas · GeoPandas · seaborn · matplotlib</p>
-  <p class="skip">Short on time? Read the <a href="#summary">executive summary</a> or the <a href="#recommendations">recommendations</a>.</p>
+  <p class="skip"><a href="https://github.com/tobeyfung/780-transit/blob/main/A03-Transportation-Convenience-Across-US%20cities.ipynb">Technical detail: analysis notebook</a></p>
 </header>
 
 <section id="background">
-  <h2>Background</h2>
-  <p>We scored 230 U.S. cities across four years (920 city-year rows) using six public data sources. Students and recent grads who skip car ownership need to know which cities are actually easy to live in without one. Big-city transit is well studied. Small and mid-size cities are not, and comparing them means juggling funding, ridership, and walkability from separate sources.</p>
-  <p><strong>Questions:</strong> Which size tier scores best, and which cities beat their size? Does population growth make a city easier to get around without a car? What drives a city's score?</p>
-  <p><strong>Tiers by 2020 population:</strong> Small (under 100K) · Medium (100K–450K) · Big (450K+). The charts label the top tier "Large".</p>
-</section>
-
-<section id="summary">
-  <h2>Executive summary</h2>
-  <p class="lead">Big cities score highest, but size is not the whole story. 22 small and medium cities match or beat the big-city average of 32.1, and population growth had almost no link to convenience (r ≈ 0.03).</p>
-  <figure>
-    <div class="scroll"><img src="images/graph11.png" alt="Bar chart of 11 small and 11 medium cities whose average convenience score meets or beats the large-city mean of 32.1. Olympia, Washington leads at 57.3."></div>
-    <figcaption>Small and medium cities that meet the large-city benchmark (mean 32.1).</figcaption>
-  </figure>
+  <h2>Background &amp; Overview</h2>
+  <p>Students and recent graduates relocating for school or work often choose to live without a car to avoid the cost of owning one. Transit in the largest metros is well documented. Transit convenience in small and mid-size cities is not, and comparing cities means reading funding, ridership, and walkability data from separate public sources.</p>
+  <p>This project combines those sources into a single score so cities can be compared on one scale. The score supports decisions for car-free movers, and for the planning and advisory teams who support them.</p>
+  <p><strong>The analysis covers:</strong></p>
   <ul>
-    <li><strong>Big cities lead:</strong> median score about 26 vs about 23 for medium and small, and the biggest ridership gain from 2020 to 2023 (about 58%).</li>
-    <li><strong>Smaller cities can match them:</strong> Olympia (57.3), Miami (50.1), Salt Lake City (48.5), Pittsburgh (45.7), Minneapolis (45.1).</li>
-    <li><strong>Region matters:</strong> the Northeast leads every tier. Small Southern cities score lowest (15.3).</li>
-    <li><strong>Growth does not predict convenience.</strong> A fast-growing city is not automatically easier to live in without a car.</li>
+    <li>Convenience by city size tier: Small (under 100K), Medium (100K–450K), Big (450K+)</li>
+    <li>Small and medium cities that perform at big-city levels</li>
+    <li>Whether population growth is associated with better convenience</li>
+    <li>Which components (funding, ridership, walkability) drive a city's score</li>
+    <li>Regional gaps</li>
   </ul>
+  <p><strong>Scope:</strong> 230 cities, 2020–2023, 920 city-year observations.</p>
 </section>
 
 <section id="data">
-  <h2>Data structure</h2>
-  <p>Six public sources, about 2.9M raw rows, merged into one city-year table.</p>
-  <div class="pipeline">
-    <div class="pipe-col">
-      <h4>Sources</h4>
-      <ul>
-        <li>Census population<small>~1,969 rows</small></li>
-        <li>FTA transit funding<small>6,813 rows</small></li>
-        <li>FTA monthly ridership<small>~2,357 rows</small></li>
-        <li>Walkability index<small>2.66M block-group rows</small></li>
-        <li>EPA walkability + 2010 place boundaries<small>spatial join to city level</small></li>
-      </ul>
-    </div>
-    <div class="arrow" aria-hidden="true">→</div>
-    <div class="pipe-col">
-      <h4>Merged panel</h4>
-      <ul>
-        <li>230 cities × 4 years<small>920 rows</small></li>
-        <li>Names standardized across four geographies<small>cities, agencies, urbanized areas, block groups</small></li>
-      </ul>
-    </div>
-    <div class="arrow" aria-hidden="true">→</div>
-    <div class="pipe-col">
-      <h4>Score 0–100</h4>
-      <ul>
-        <li>Funding per capita<small>min-max scaled, 1/3</small></li>
-        <li>Transit trips per capita<small>min-max scaled, 1/3</small></li>
-        <li>Walkability<small>min-max scaled, 1/3</small></li>
-      </ul>
-    </div>
-  </div>
-  <p>The hardest part was joining sources that use different geographies. We standardized names with string cleaning and used GIS spatial joins to roll block-group walkability up to the city level.</p>
+  <h2>Data Structure Overview</h2>
+  <p>Six public sources were cleaned and joined into one city-year table on City, State, and Year. Walkability was measured at the census block-group level and rolled up to the city level with a spatial join.</p>
+  <figure><div class="scroll"><img src="images/data-model.png" alt="Data model: population, funding, ridership and walkability tables joined on City, State and Year into one merged panel of 920 rows, which feeds the Convenience Score"></div><figcaption>Four cleaned tables joined into one merged panel.</figcaption></figure>
+  <div class="tbl"><table>
+    <thead><tr><th>Source</th><th>Provider</th><th>Used for</th></tr></thead>
+    <tbody>
+      <tr><td>City and town population estimates</td><td>U.S. Census Bureau</td><td>Population, size tier, region</td></tr>
+      <tr><td>Total funding time series</td><td>Federal Transit Administration (FTA)</td><td>Transit funding</td></tr>
+      <tr><td>Monthly ridership (unlinked passenger trips)</td><td>FTA National Transit Database</td><td>Transit ridership</td></tr>
+      <tr><td>Walkability index, 2017–2023</td><td>Social Data Commons (UVA)</td><td>Walkability</td></tr>
+      <tr><td>National Walkability Index, 2010 vintage</td><td>U.S. EPA</td><td>Block-group boundaries and scores</td></tr>
+      <tr><td>2010 Census place boundaries</td><td>U.S. Census Bureau</td><td>City boundaries for the spatial join</td></tr>
+    </tbody>
+  </table></div>
+  <p><strong>Convenience Score:</strong> funding per capita, ridership per capita, and walkability, each min-max scaled and weighted equally into a 0–100 score.</p>
+</section>
+
+<section id="summary">
+  <h2>Executive Summary</h2>
+  <p class="lead"><strong>Big cities score highest on transportation convenience, with a median score of about 26 against about 23 for medium and small cities.</strong> Their ridership also rebounded the most between 2020 and 2023. The gap between tiers is small compared with the spread inside each tier, and 22 small and medium cities score at or above the big-city average of 32.1. Population growth had almost no relationship with changes in convenience (correlation of 0.03), so a fast-growing city is not automatically an easier one to live in without a car.</p>
+  <figure><div class="scroll"><img src="images/summary-tiers.png" alt="Two bar charts: median convenience score is about 26 for big cities and about 23 for medium and small; ridership change from 2020 to 2023 is +58% big, +53% small, +40% medium"></div><figcaption>Median convenience score and ridership change by city size tier.</figcaption></figure>
 </section>
 
 <section id="insights">
-  <h2>Insights deep dive</h2>
+  <h2>Insights Deep Dive</h2>
 
   <div class="insight">
-    <h3>Big cities win on average, but the tiers overlap</h3>
-    <p class="sum">Big cities rose from about 31 to about 34 between 2020 and 2023.</p>
-    <figure><div class="scroll"><img src="images/graph09.png" alt="Line and scatter chart of average convenience score by year for small, medium and big cities, 2020 to 2023" loading="lazy"></div><figcaption>Average score by year and tier.</figcaption></figure>
-    <p class="detail">Medium (about 23) and small (about 22) stayed mostly flat. The spread inside each tier is larger than the gap between tiers, so size alone does not decide a city's score.</p>
+    <h3>1. Big cities lead, and the lead is growing</h3>
+    <p class="sum">Big cities averaged about 31 in 2020 and about 34 in 2023, with most of the gain after 2021. Medium and small cities stayed roughly flat. Ridership rose in every tier since 2020, most in big cities.</p>
+    <div class="tbl"><table>
+      <thead><tr><th>Tier</th><th>Average score, 2020 to 2023</th><th>Median score</th><th>Ridership change, 2020 to 2023</th></tr></thead>
+      <tbody>
+        <tr><td>Big (450K+)</td><td>about 31 to about 34, up</td><td>about 26</td><td>+58%</td></tr>
+        <tr><td>Medium (100K–450K)</td><td>about 23, flat</td><td>about 23</td><td>+40%</td></tr>
+        <tr><td>Small (under 100K)</td><td>about 22, flat</td><td>about 23</td><td>+53%</td></tr>
+      </tbody>
+    </table></div>
   </div>
 
   <div class="insight">
-    <h3>Population growth does not explain convenience</h3>
-    <p class="sum">Across all 230 cities, the correlation between 2020–2023 population growth and the change in score is about 0.03.</p>
-    <figure><div class="scroll"><img src="images/graph10.png" alt="Four-quadrant scatter plot of population growth against percent change in convenience score for 230 cities, showing no linear relationship" loading="lazy"></div><figcaption>Population growth vs change in score, r ≈ 0.03.</figcaption></figure>
+    <h3>2. 22 small and medium cities match the big-city average</h3>
+    <p class="sum">Using the big-city average of 32.1 as the benchmark, 11 small and 11 medium cities meet or exceed it. Olympia, WA leads at 57.3, followed by Miami (50.1), Salt Lake City (48.5), Pittsburgh (45.7), and Minneapolis (45.1).</p>
+    <figure><div class="scroll"><img src="images/summary-benchmark.png" alt="Horizontal bar chart of 22 small and medium cities with average convenience scores from 32.2 to 57.3, above the big-city average of 32.1" loading="lazy"></div><figcaption>Small and medium cities at or above the big-city average.</figcaption></figure>
+  </div>
+
+  <div class="insight">
+    <h3>3. Population growth does not explain convenience</h3>
+    <p class="sum">Across 230 cities, population growth from 2020 to 2023 and the percent change in score have a correlation of about 0.03.</p>
+    <figure><div class="scroll"><img src="images/graph10.png" alt="Four-quadrant scatter plot of population growth against percent change in convenience score for 230 cities, showing no linear relationship" loading="lazy"></div><figcaption>Population growth vs change in convenience score, 230 cities.</figcaption></figure>
     <p class="detail">Growth is also close to unrelated to each component: walkability 0.09, funding 0.02, ridership −0.08.</p>
   </div>
 
   <div class="insight">
-    <h3>Walkability does the most work, and some cities lean on it too much</h3>
-    <p class="sum">Walkability has the strongest link to the score (0.85), then ridership (0.77) and funding (0.70).</p>
-    <figure><div class="scroll"><img src="images/graph07.png" alt="Stacked bars showing how funding, ridership and walkability contribute to the score for the top five and bottom five cities" loading="lazy"></div><figcaption>Sub-metric contribution, top 5 and bottom 5 cities.</figcaption></figure>
-    <p class="detail">Part of that is built into the formula. Boston and Washington are balanced, Seattle and San Francisco lean on walkability, and Olympia leans on funding. Bottom-ranked Sherman (about 95%) and Evansville (about 88%) get almost all of their score from walkability and have very little transit.</p>
+    <h3>4. Walkability carries the most weight in the score</h3>
+    <p class="sum">Walkability has the strongest correlation with the overall score (0.85), followed by ridership (0.77) and funding (0.70). These correlations are partly built into the formula, since all three feed the score.</p>
+    <figure><div class="scroll"><img src="images/graph07.png" alt="Stacked bars showing how funding, ridership and walkability contribute to the score for the top five and bottom five cities" loading="lazy"></div><figcaption>How funding, ridership, and walkability contribute to the score, top 5 and bottom 5 cities.</figcaption></figure>
+    <p class="detail">Top cities get there in different ways: Boston and Washington are balanced, Seattle and San Francisco lean on walkability, and Olympia leans on funding. Among the bottom five, Sherman gets about 95% of its score from walkability and Evansville about 88%, with very little transit funding or ridership.</p>
   </div>
 
   <div class="insight">
-    <h3>Region matters as much as size</h3>
-    <p class="sum">The Northeast has the highest average in every tier, and big Northeastern cities average 55.7.</p>
-    <figure><div class="scroll"><img src="images/graph12.png" alt="Grouped bar chart of average convenience score by region and city size tier" loading="lazy"></div><figcaption>Average score by region and tier.</figcaption></figure>
-    <p class="detail">Big cities score highest within every region. Small and medium Southern cities score lowest, at 15.3 and 18.9. Across all regions, small cities score low on funding and ridership while their walkability holds up, and that is the largest sub-metric gap in the data.</p>
+    <h3>5. Region matters as much as size</h3>
+    <p class="sum">The Northeast has the highest average in every tier, and big Northeastern cities average 55.7. Small and medium Southern cities score lowest, at 15.3 and 18.9.</p>
+    <figure><div class="scroll"><img src="images/graph12.png" alt="Grouped bar chart of average convenience score by region and city size tier" loading="lazy"></div><figcaption>Average convenience score by region and city size tier.</figcaption></figure>
+    <p class="detail">Big cities score highest within every region. In every region, small cities score low on funding and ridership while walkability holds up, which is the largest sub-metric gap in the data.</p>
   </div>
-
-  <div class="insight">
-    <h3>Every tier recovered ridership</h3>
-    <p class="sum">From 2020 to 2023, ridership rose about 58% in big cities, 53% in small, and 40% in medium.</p>
-    <figure><div class="scroll"><img src="images/graph03.png" alt="Bar chart of post-pandemic transit ridership change from 2020 to 2023 by city size tier" loading="lazy"></div><figcaption>Ridership change, 2020 to 2023.</figcaption></figure>
-    <p class="detail">Trips per funding dollar are similar across tiers (small 0.083, medium 0.079, big 0.077), so that gap is small.</p>
-  </div>
+  <p class="detail">Charts 3 to 5 are exported from the notebook in its original styling. The notebook has all 15 charts.</p>
 </section>
 
 <section id="recommendations">
   <h2>Recommendations</h2>
   <div class="cols">
     <div>
-      <h3>For students and recent grads</h3>
-      <ul>
-        <li><strong>Compare cities, not size tiers.</strong> Look at the score and its three parts for each city you are considering.</li>
-        <li><strong>Check the smaller-city shortlist</strong> for big-city convenience: Olympia, Salt Lake City, Pittsburgh, Minneapolis, Harrisburg, Lancaster.</li>
-        <li><strong>Check what drives the score.</strong> A high score built on walkability alone may still lack frequent transit.</li>
-        <li><strong>Do not use population growth as a shortcut.</strong></li>
-      </ul>
+      <h3>For student housing and relocation advisors</h3>
+      <ol>
+        <li><strong>Compare cities, not size tiers.</strong> Look at the score and its three components for each shortlisted city.</li>
+        <li><strong>Add smaller cities to the shortlist.</strong> Olympia, Salt Lake City, Pittsburgh, Minneapolis, Harrisburg, and Lancaster all score above the big-city average.</li>
+        <li><strong>Check what is behind a high score.</strong> A score driven by walkability alone, as in Sherman and Evansville, may not come with frequent transit. Review ridership and funding before recommending a city.</li>
+        <li><strong>Do not use population growth as a proxy for convenience.</strong></li>
+      </ol>
     </div>
     <div>
-      <h3>For city planners</h3>
-      <ul>
-        <li><strong>Judge transit outcomes, not growth.</strong> Growth did not translate into better convenience.</li>
-        <li><strong>Target the gap.</strong> Small cities in every region score low on funding and ridership even where walkability is fine.</li>
-      </ul>
+      <h3>For transit planners and policy analysts</h3>
+      <ol>
+        <li><strong>Measure outcomes, not growth.</strong> Growth did not translate into better convenience in 2020–2023.</li>
+        <li><strong>Investigate small-city funding and service.</strong> Small cities in every region score low on funding and ridership even where walkability is fine. The South trails in both small and medium tiers and is a place to look first.</li>
+      </ol>
     </div>
   </div>
+  <p><strong>Next steps to explore:</strong> add commute time, service frequency, and fares to the score, then test regression models (Random Forest, XGBoost) to build a national index.</p>
 </section>
 
 <section id="caveats">
-  <h2>Caveats and next steps</h2>
+  <h2>Caveats &amp; Assumptions</h2>
   <ul>
-    <li><strong>Simplified score:</strong> equal weights are a modeling choice, and other weights would change the rankings.</li>
-    <li><strong>Geographic mismatch:</strong> population is by city, while ridership and funding are by agency or urbanized area.</li>
-    <li><strong>COVID-19 window:</strong> 2020–2023 includes the drop and recovery, so ridership trends need careful reading.</li>
-    <li><strong>Not causal:</strong> income, density, car ownership, and land use are not controlled for. Commute time, service frequency, and fares are not included.</li>
+    <li><strong>Joining the data took real cleanup.</strong> The sources use four different geographies: cities, transit agency headquarters, urbanized areas, and block groups. City names were standardized with string cleaning, and many records that did not match across sources were dropped to produce a clean dataset of 230 cities.</li>
+    <li><strong>Geographic mismatch remains.</strong> Population is reported by city, while ridership and funding are reported by agency or urbanized area.</li>
+    <li><strong>Equal weights are a modeling choice.</strong> Other weightings would change the rankings.</li>
+    <li><strong>The window includes COVID-19.</strong> 2020–2023 covers the ridership drop and recovery, so ridership trends need careful reading.</li>
+    <li><strong>Funding is not service quality.</strong> Higher funding does not guarantee better frequency or coverage.</li>
+    <li><strong>Findings are correlations, not causes.</strong> Income, density, car ownership, and land use are not controlled for.</li>
   </ul>
-  <p><strong>Next:</strong> add commute time, frequency, and fares, then test Random Forest and XGBoost models for a national index.</p>
 </section>
 
 <footer>
-  <p><strong>Team 3 (Thomas):</strong> Ryan Jiang, Chenxi Wu, Jingyu Zhang, Tobey Fung (Project Manager)</p>
+  <p><strong>Team 3:</strong> Ryan Jiang, Chenxi Wu, Jingyu Zhang, Tobey Fung (Project Manager)</p>
   <p><a href="https://github.com/tobeyfung/780-transit">View the notebook and data on GitHub</a>. The notebook was written in Google Colab and reads from Google Drive paths, so update them to run it elsewhere.</p>
   <p>Generative AI tools (Gemini, ChatGPT) were used for code assistance and phrasing. All data, visuals, and analyses come from the sources and notebook.</p>
 </footer>
