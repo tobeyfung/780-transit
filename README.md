@@ -2,8 +2,6 @@
 
 **Python · pandas · GeoPandas · seaborn · matplotlib** | BU MSBA, Team 3 project
 
-> **Short on time?** Jump to the [Executive Summary](#executive-summary) or the [Recommendations](#recommendations).
-
 ---
 
 ## Background & Overview
